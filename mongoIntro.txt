@@ -1,0 +1,121 @@
+QUESTION: 
+For this assignment you need to create a database called assignment and collection called users that has following fields :-
+- first_name
+- last_name
+- email
+- gender
+- ip_address
+- age
+
+SOLUTION:
+<--------- CREATE DATABASE --------->
+> use assignment
+switched to db assignment
+
+<--------- CREATE COLLECTION --------->
+> db.createCollection("users")
+{ "ok" : 1 }
+
+> show collections
+users
+
+<--------- INSERT ONE DOCUMENT --------->
+> db.users.insert({"first_name":"Aditi","last_name":"Shimple","email":"aditishimple22@gmail.com","gender":"female","ip_address":"192.168.1.5","age":"21"})
+WriteResult({ "nInserted" : 1 })
+
+<--------- INSERT MANY DOCUMENTS --------->
+> db.users.insertMany([{"first_name":"Prathamesh","last_name":"Palande","email":"prathamesh020201@gmail.com","gender":"male","ip_address":"192.164.1.4","age":"25"}, {"first_name":"Shreya","last_name":"Deshmukh","email":"shreya14@gmail.com","gender":"female","ip_address":"192.165.1.8","age":"23"},{"first_name":"Abhijeet","last_name":"Shimple","email":"abshimple@gmail.com","gender":"male","ip_address":"192.169.1.7","age":"29"}])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("626a2049a50dda55d89dfcac"),
+		ObjectId("626a2049a50dda55d89dfcad"),
+		ObjectId("626a2049a50dda55d89dfcae")
+	]
+}
+
+<--------- FIND ALL DOCUMENTS --------->
+> db.users.find({}).pretty()
+{
+	"_id" : ObjectId("626a1e9ba50dda55d89dfcab"),
+	"first_name" : "Aditi",
+	"last_name" : "Shimple",
+	"email" : "aditishimple22@gmail.com",
+	"gender" : "female",
+	"ip_address" : "192.168.1.5",
+	"age" : "21"
+}
+{
+	"_id" : ObjectId("626a2049a50dda55d89dfcac"),
+	"first_name" : "Prathamesh",
+	"last_name" : "Palande",
+	"email" : "prathamesh020201@gmail.com",
+	"gender" : "male",
+	"ip_address" : "192.164.1.4",
+	"age" : "25"
+}
+{
+	"_id" : ObjectId("626a2049a50dda55d89dfcad"),
+	"first_name" : "Shreya",
+	"last_name" : "Deshmukh",
+	"email" : "shreya14@gmail.com",
+	"gender" : "female",
+	"ip_address" : "192.165.1.8",
+	"age" : "23"
+}
+{
+	"_id" : ObjectId("626a2049a50dda55d89dfcae"),
+	"first_name" : "Abhijeet",
+	"last_name" : "Shimple",
+	"email" : "abshimple@gmail.com",
+	"gender" : "male",
+	"ip_address" : "192.169.1.7",
+	"age" : "29"
+}
+
+<--------- FIND ONE DOCUMENT --------->
+> db.users.find({"first_name" : "Abhijeet"}).pretty()
+{
+	"_id" : ObjectId("626a2049a50dda55d89dfcae"),
+	"first_name" : "Abhijeet",
+	"last_name" : "Shimple",
+	"email" : "abshimple@gmail.com",
+	"gender" : "male",
+	"ip_address" : "192.169.1.7",
+	"age" : "29"
+}
+
+<--------- UPDATE ONE DOCUMENT --------->
+> db.users.update({"first_name" : "Aditi"},{$set : {"City" : "Pune"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.users.findOne({"first_name":"Aditi"})
+{
+	"_id" : ObjectId("626a1e9ba50dda55d89dfcab"),
+	"first_name" : "Aditi",
+	"last_name" : "Shimple",
+	"email" : "aditishimple22@gmail.com",
+	"gender" : "female",
+	"ip_address" : "192.168.1.5",
+	"age" : "21",
+	"City" : "Pune"
+}
+
+<--------- UPDATE MULTIPLE DOCUMENTS --------->
+>  db.users.updateMany({},{$set : {"country": "India"}})
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }
+
+<--------- REMOVE ONE DOCUMENT --------->
+> db.users.remove({"_id" : ObjectId("626a2049a50dda55d89dfcad")})
+WriteResult({ "nRemoved" : 1 })
+
+<--------- DELETE MANY DOCUMENTS --------->
+> db.users.deleteMany({gender : "male"})
+{ "acknowledged" : true, "deletedCount" : 2 }
+
+<--------- DELETE DATABASE --------->
+> db.dropDatabase()
+{ "ok" : 1 }
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB

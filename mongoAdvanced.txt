@@ -1,0 +1,43 @@
+<------------------- CREATE DATABASE -------------------->
+> use movies
+switched to db movies
+
+<------------------- DOCUMENTS PRESENT IN COLLECTION -------------------->
+> db.movies.count()
+500
+
+<------------------- FIND ALL MOVIES WHICH ARE EQUAL TO MOVIE_NAME -------------------->
+> db.movies.find({"movie_name":"Nocturna"},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+{ "movie_name" : "Nocturna", "production_year" : 1995 }
+
+<------------------- FIND ALL MOVIES WHICH ARE NOT EQUAL TO MOVIE_NAME -------------------->
+> db.movies.find({movie_name:{$ne:"Godzilla"}},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES GREATER THAN AND GREATER THAN EQUAL TO A BUDGET -------------------->
+> db.movies.find({budget:{$gt: "$19000"}},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+> db.movies.find({budget:{$gte: "$19000"}},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES LESS THAN AND LESS THAN EQUAL TO A BUDGET -------------------->
+> db.movies.find({budget:{$lt: "$10000"}},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+> db.movies.find({budget:{$lte: "$10000"}},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES THAT ARE PRODUCED AFTER 2000 WITH BUDGET GREATER THAN 10000 -------------------->
+> db.movies.find({"production_year" : {$gt:2000} , "budget" : {$gt : "$10000"}},{"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES THAT ARE PRODUCED AFTER 2000 OR BUDGET GREATER THAN 10000 -------------------->
+> db.movies.find({$or: [{ "budget": {$lte: "$10000"}},{ "production_year": {$gt: 2000}}]}, {"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES THAT ARE NEITHER PRODUCED AFTER 2000 NOR WITH BUDGET GREATER THAN 10000 -------------------->
+> db.movies.find({$nor: [{ "budget": {$lte: "$10000"}},{ "production_year": {$gt: 2000}}]}, {"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES THAT ARE NOT PRODUCED IN 2000 OR THEY DO NOT HAVE BUDGET OF 10000 -------------------->
+> db.movies.find({$or: [{ "budget": {$ne: "$10000"}},{ "production_year": {$ne: 2000}}]}, {"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- FIND ALL MOVIES THAT WERE PRODUCED FROM 2000 TO 2010 -------------------->
+> db.movies.find({ "production_year": {$gte: 2000, $lte: 2010}}, {"movie_name": 1, "production_year": 1, "_id": 0}).pretty()
+
+<------------------- SORT ALL MOVIES DESCENDING BASED ON THE PRODUCTION YEAR AND IF THE YEAR IS NOT SAME THEN SORT APLHABETICALLY FOR THEIR MOVIE_NAMES -------------------->
+> db.movies.find({}, {"movie_name": 1, "production_year": 1, "_id": 0}).sort({"production_year": -1}).pretty()
+
+<------------------- IN QUERY SKIP THE FIRST 10 ENTERIES AND FETCH THE NEXT 5 -------------------->
+> db.movies.find({}, {"movie_name": 1, "production_year": 1, "_id": 0}).skip(10).limit(5).pretty()
